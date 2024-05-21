@@ -1,0 +1,71 @@
+﻿@page "/addStudent"
+
+@using StudentAppHybrid.Database
+@inject NavigationManager navigation
+
+<h3>Add New Student</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <EditForm Model="studObj" FormName="addStudent" OnValidSubmit="CreateStudent">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">First Name</label>
+                            <InputText for="FirstName" class="form-control" @bind-Value="@studObj.FirstName"></InputText>
+                            <ValidationMessage For="()=> studObj.FirstName"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Middle Name</label>
+                            <InputText for="MiddleName" class="form-control" @bind-Value="@studObj.MiddleName"></InputText>
+                            <ValidationMessage For="()=> studObj.MiddleName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Last Name</label>
+                            <InputText for="LastName" class="form-control" @bind-Value="@studObj.LastName"></InputText>
+                            <ValidationMessage For="()=> studObj.LastName" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Gender</label>
+                            <InputText for="Gender" class="form-control" @bind-Value="@studObj.Gender"></InputText>
+                            <ValidationMessage For="()=> studObj.Gender" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary float-end" >Save Student</button>
+                    <a href="studentlist" class="btn btn-danger float-start">Back to List</a>
+                </div>
+            </div>
+
+        </EditForm>
+    </div>
+
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public Student studObj { get; set; } = new ();
+
+    protected async Task CreateStudent()
+    {
+        var result = await App.Database.CreateAsync<Student>(studObj);
+
+        if(result > 0)
+        {
+
+        }
+        navigation.NavigateTo("/studentlist");
+    }
+}
